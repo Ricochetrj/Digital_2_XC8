@@ -19,6 +19,7 @@
       <itemPath>Lab_1_Racing_Game.c</itemPath>
       <itemPath>Clase_2_Interrupciones_y_Lib.c</itemPath>
       <itemPath>Interrupts_10.c</itemPath>
+      <itemPath>Oscilador.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
