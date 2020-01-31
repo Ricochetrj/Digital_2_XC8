@@ -36,8 +36,10 @@
 #pragma config LVP = OFF        // Low Voltage Programming Enable bit (RB3 pin has digital I/O, HV on MCLR must be used for programming)
 #pragma config BOR4V = BOR21V   // Brown-out Reset Selection bit (Brown-out Reset set to 2.1V)
 #pragma config WRT = OFF        // Flash Program Memory Self Write Enable bits (Write protection off)
+#include<stdint.h>
 
 #include <xc.h>
+
 
 /*LEDs del Jugador 1*/
 #define LP1_1 PORTAbits.RA6
@@ -86,33 +88,33 @@ unsigned char caso_p1;// Variable en donde se guarda la posicion del LED en el q
 unsigned char caso_p2;// Variable en donde se guarda la posicion del LED en el que se esta para P2
 unsigned char BP1_O;// Variable que Guarda el estado previo del boton del Jugador 1
 unsigned char BP2_O;// Variable que Guarda el estado previo del boton del Jugador 2
-void Countdown(void);
+void Countdown(void);// se Inicializa la funcion que cuenta de 3-0 y apaga los leds del countdown
 
 void main(void){
-    Start();
+    Start();// Se manda a llamar la rutina de inicio
     x:
-    if(START_B == 1){
-        ON_LED = 1;
+    if(START_B == 1){// Utilizando un label se tiene que el programa no comienza hasta que se presiona el boton de inicio
+        ON_LED = 1;//Si se inicia mostrarlo en un led
         OFF_LED =0;
         Countdown();
         
-        goto begin;
+        goto begin;// label que se va a mi loop infinito
                     }
-    else{
+    else{// Si no se presiono el boton de inicio no hacer nada y dejar prendido el led de apagado
         OFF_LED = 1;
         ON_LED = 0;
         goto x;
     }
     begin:
     while(1){
-        delay(1);
-        if(BP1==0&&BP1_O==1){
+        delay(1);// Se introduce un delay minimo  para evitar problemas con captar el input de los botones
+        if(BP1==0&&BP1_O==1){// Usando esta condicion se crea un antirebote usando el flanco negativo del boton que revisa el est
             caso_p1 ++;
-            switch (caso_p1){
-                case 1: 
+            switch (caso_p1){// Utilizando casos podemos prender y apagar los LEDs de los respectivos puertos
+                case 1: // Prender el primer led
                     PORTA = 0;
                     LP1_1=1;
-                    LP1_2=0;
+                    LP1_2=0;// En retrospectiva se pudise haber mandado un solo valor a todo el puerto
                     LP1_3=0;
                     LP1_4=0;
                     LP1_5=0;
@@ -121,7 +123,7 @@ void main(void){
                     LP1_8=0;
                     
                     break;
-                case 2: 
+                case 2: //Prender el segundo LED
                     LP1_1=0;
                     LP1_2=1;
                     LP1_3=0;
@@ -132,7 +134,7 @@ void main(void){
                     LP1_8=0;
                 
                 break;
-                case 3:
+                case 3:// Prender el tercer LED
                     LP1_1=0;
                     LP1_2=0;
                     LP1_3=1;
@@ -143,7 +145,7 @@ void main(void){
                     LP1_8=0;
                 
                 break;
-                case 4:
+                case 4:// Prender el cuarto LED
                     LP1_1=0;
                     LP1_2=0;
                     LP1_3=0;
@@ -154,7 +156,7 @@ void main(void){
                     LP1_8=0;
                 
                 break;
-                case 5:
+                case 5:// Prender el quinto LED
                     LP1_1=0;
                     LP1_2=0;
                     LP1_3=0;
@@ -165,7 +167,7 @@ void main(void){
                     LP1_8=0;
                 
                 break;
-                case 6:
+                case 6:// Prender el sexto LED
                     LP1_1=0;
                     LP1_2=0;
                     LP1_3=0;
@@ -176,7 +178,7 @@ void main(void){
                     LP1_8=0;
                 
                 break;
-                case 7:
+                case 7:// Prender el Septimo LED
                     LP1_1=0;
                     LP1_2=0;
                     LP1_3=0;
@@ -187,7 +189,7 @@ void main(void){
                     LP1_8=0;
                 
                 break;
-                case 8:
+                case 8:// Prender el Octavo led y declrar ganador al jugador 1
                     LP1_1=0;
                     LP1_2=0;
                     LP1_3=0;
@@ -222,7 +224,7 @@ void main(void){
         else if(BP2==0&& BP2_O==1){
             
             caso_p2 ++;
-            switch (caso_p2){
+            switch (caso_p2){// Mismo caso que con el jugador 1, pero aqui se declara ganador al jugador 2
                 case 1:
                     PORTB=0;
                     LP2_1=1;
@@ -339,12 +341,12 @@ void main(void){
 
         
    
-void Start(void){
+void Start(void){// Se inicializan las variables y se hacen las declaraciones necesarias de los peurtos para saber que pines son entradas y salidas
     caso_p1=0;
     caso_p2=0;
             
     /*Puerto B*/
-    TRISB0=0;
+    TRISB0=0;// Puerto B es una salida
     TRISB1=0;
     TRISB2=0;
     TRISB3=0;
@@ -353,7 +355,7 @@ void Start(void){
     TRISB6=0;
     TRISB7=0;
     /*Puerto A*/
-    TRISA0= 0;
+    TRISA0= 0;//Puerto A es una salida
     TRISA1= 0;
     TRISA2= 0;
     TRISA3= 0;
@@ -362,7 +364,7 @@ void Start(void){
     TRISA6= 0;
     TRISA7= 0;
     /*Puerto C*/
-    TRISC0= 0;
+    TRISC0= 0;// Puerto C es una salida
     TRISC1= 0;
     TRISC2= 0;
     TRISC3= 0;
@@ -371,7 +373,7 @@ void Start(void){
     TRISC6= 0;
     TRISC7= 0;
     /*Puerto D*/
-    TRISD7= 0;
+    TRISD7= 0;// Puerto D tiene entradas y salidas
     TRISD6= 0;
     TRISD5= 0;
     TRISD4= 0;
@@ -380,7 +382,7 @@ void Start(void){
     TRISD1= 0;
     TRISD0= 1;
     
-    ANSEL = 0;
+    ANSEL = 0;// No tenemos entradas analogicas
     ANSELH = 0;
     OFF_LED = 1;
     ON_LED = 0;
@@ -421,7 +423,7 @@ void Start(void){
     
     
 }
-void delay(int del){
+void delay(int del){// Rutina de delays por cuenta de mas o menos .5 s
     for (int i = 0; i<del;i++){
         for (int j = 0; j< 255; j++){
             /*for (int p = 0; p< 255; p++){
@@ -432,17 +434,8 @@ void delay(int del){
     }
     
 }
-/*void antirebote(unsigned char rebote){
-    
-}*/
 void Countdown(void){
-    /*unsigned char display[] = {0x3F, 0x06, 0x5B, 0x4F};
-    for (int i = 3; i > 0; i--)
-    {
-        delay(200);
-        PORTB = display[i];
-    }*/
-
+// Se hace la secuencia de inicio donde se cuenta 3,2,1,0 yluego permite comenzar la carrera
     delay(100);
     ON_LED = 1;
     OFF_LED= 0;
